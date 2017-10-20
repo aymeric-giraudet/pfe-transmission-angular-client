@@ -10,7 +10,7 @@ before_script:
   - npm install -g @angular/cli
 
 script:
-  - ng build -prod --base-href /pfe-transmission-angular-client
+  - ng build -prod --base-href /pfe-transmission-angular-client/
 
 deploy:
   provider: pages
