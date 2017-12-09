@@ -1,0 +1,8 @@
+<div *ngFor="let torrent of torrents" class="card">
+  <div class="card-header">
+    {{torrent.name}}
+  </div>
+  <div class="card-body">
+      <ngb-progressbar showValue="true" type="success" [value]="torrent.percentDone"></ngb-progressbar>
+  </div>
+</div>
