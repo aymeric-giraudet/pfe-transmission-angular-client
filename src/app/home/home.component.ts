@@ -10,6 +10,7 @@ import {ITorrent} from "node-transmission-typescript/dist/models";
 })
 export class HomeComponent implements OnInit {
     public torrents: ITorrent[];
+    public url: string;
 
     constructor(public transmissionService: TransmissionService,
                 private route: ActivatedRoute,
@@ -26,5 +27,10 @@ export class HomeComponent implements OnInit {
 
     public refresh() {
         this.transmissionService.transmission.get().then(value => this.torrents = value);
+    }
+
+    addByUrl() {
+        console.log(this.url);
+        this.transmissionService.transmission.addUrl(this.url).then(value => console.log(value));
     }
 }
