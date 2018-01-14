@@ -17,7 +17,14 @@ export class HomeComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.transmissionService.transmission.get().then(value => this.torrents = value);
+        if(this.transmissionService.transmission) {
+            setInterval(() => {this.refresh();}, 2000)
+        } else {
+            this.router.navigate(['/login'], { skipLocationChange: true });
+        }
     }
 
+    public refresh() {
+        this.transmissionService.transmission.get().then(value => this.torrents = value);
+    }
 }

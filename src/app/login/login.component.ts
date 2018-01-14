@@ -26,7 +26,7 @@ export class LoginComponent implements OnInit {
         transmission.session()
             .then(value => {
                 this.transmissionService.transmission = transmission;
-                this.router.navigate(['/home']);
+                this.router.navigate(['/home'], { skipLocationChange: true });
             })
             .catch(reason => console.log(reason));
     }

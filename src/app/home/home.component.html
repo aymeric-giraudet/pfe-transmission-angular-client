@@ -3,6 +3,6 @@
     {{torrent.name}}
   </div>
   <div class="card-body">
-      <ngb-progressbar showValue="true" type="success" [value]="torrent.percentDone"></ngb-progressbar>
+      <ngb-progressbar showValue="true" type="success" [value]="(torrent.percentDone*100).toFixed(2)"></ngb-progressbar>
   </div>
 </div>
