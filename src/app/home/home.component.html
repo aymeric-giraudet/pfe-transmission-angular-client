@@ -1,14 +1,19 @@
 <nav class="navbar navbar-light bg-faded">
     <form class="form-inline" novalidate>
-        <input class="form-control mr-sm-2" type="text" placeholder="Link" [(ngModel)]="url" [ngModelOptions]="{standalone: true}">
+        <input class="form-control mr-sm-2" type="text" placeholder="Link" [(ngModel)]="url"
+               [ngModelOptions]="{standalone: true}">
         <button class="btn btn-outline-success my-2 my-sm-0" (click)="addByUrl();">Add</button>
     </form>
+    <button type="button" ngFilePicker (filePick)="file = $event; print();">Browse</button>
 </nav>
-<div *ngFor="let torrent of torrents" class="card">
-  <div class="card-header">
-    {{torrent.name}}
-  </div>
-  <div class="card-body">
-      <ngb-progressbar showValue="true" type="success" [value]="(torrent.percentDone*100).toFixed(2)"></ngb-progressbar>
-  </div>
+<div class="jumbotron">
+    <div *ngFor="let torrent of torrents" class="card">
+        <div class="card-header">
+            {{torrent.name}}
+        </div>
+        <div class="card-body">
+            <ngb-progressbar showValue="true" type="success"
+                             [value]="(torrent.percentDone*100).toFixed(2)"></ngb-progressbar>
+        </div>
+    </div>
 </div>

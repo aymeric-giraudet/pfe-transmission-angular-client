@@ -8,6 +8,7 @@ import {AppComponent} from './app.component';
 import {LoginComponent} from './login/login.component';
 import { HomeComponent } from './home/home.component';
 import {TransmissionService} from "./transmission.service";
+import {AngularFilePickerModule} from "angular-file-picker";
 
 const appRoutes: Routes = [
     { path: '', component: LoginComponent },
@@ -27,7 +28,8 @@ const appRoutes: Routes = [
         RouterModule.forRoot(
             appRoutes
         ),
-        NgbModule.forRoot()
+        NgbModule.forRoot(),
+        AngularFilePickerModule
     ],
     providers: [TransmissionService],
     bootstrap: [AppComponent]

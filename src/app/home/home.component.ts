@@ -1,7 +1,8 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {TransmissionService} from "../transmission.service";
 import {ITorrent} from "node-transmission-typescript/dist/models";
+import {PickedFile} from "angular-file-picker";
 
 @Component({
     selector: 'app-home',
@@ -11,6 +12,7 @@ import {ITorrent} from "node-transmission-typescript/dist/models";
 export class HomeComponent implements OnInit {
     public torrents: ITorrent[];
     public url: string;
+    public file: PickedFile;
 
     constructor(public transmissionService: TransmissionService,
                 private route: ActivatedRoute,
@@ -30,7 +32,12 @@ export class HomeComponent implements OnInit {
     }
 
     addByUrl() {
-        console.log(this.url);
         this.transmissionService.transmission.addUrl(this.url).then(value => console.log(value));
+    }
+
+    print() {
+        console.log(this.file);
+        let base64 = this.file.content.split(',')[1];
+        this.transmissionService.transmission.addFileBase64(base64).then(value => console.log(value));
     }
 }
