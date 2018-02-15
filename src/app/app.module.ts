@@ -9,6 +9,8 @@ import {LoginComponent} from './login/login.component';
 import { HomeComponent } from './home/home.component';
 import {TransmissionService} from "./transmission.service";
 import {AngularFilePickerModule} from "angular-file-picker";
+import {MatIconModule, MatProgressSpinnerModule, MatSnackBarModule} from '@angular/material';
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 
 const appRoutes: Routes = [
     { path: '', component: LoginComponent },
@@ -24,12 +26,16 @@ const appRoutes: Routes = [
     ],
     imports: [
         BrowserModule,
+        BrowserAnimationsModule,
         FormsModule,
         RouterModule.forRoot(
             appRoutes
         ),
         NgbModule.forRoot(),
-        AngularFilePickerModule
+        AngularFilePickerModule,
+        MatIconModule,
+        MatSnackBarModule,
+        MatProgressSpinnerModule
     ],
     providers: [TransmissionService],
     bootstrap: [AppComponent]

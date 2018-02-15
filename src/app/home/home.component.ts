@@ -1,8 +1,10 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {TransmissionService} from "../transmission.service";
 import {ITorrent} from "node-transmission-typescript/dist/models";
 import {PickedFile} from "angular-file-picker";
+import {Transmission} from "node-transmission-typescript";
+import {MatSnackBar} from "@angular/material";
 
 @Component({
     selector: 'app-home',
@@ -10,34 +12,83 @@ import {PickedFile} from "angular-file-picker";
     styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
+    public transmission: Transmission;
     public torrents: ITorrent[];
     public url: string;
-    public file: PickedFile;
 
     constructor(public transmissionService: TransmissionService,
+                public snackbar: MatSnackBar,
                 private route: ActivatedRoute,
-                private router: Router) {
+                private router: Router,) {
+        this.transmission = transmissionService.transmission;
     }
 
     ngOnInit() {
-        if(this.transmissionService.transmission) {
-            setInterval(() => {this.refresh();}, 2000)
+        if(this.transmission) {
+            setInterval(() => {this.refresh();}, 1000)
         } else {
-            this.router.navigate(['/login'], { skipLocationChange: true });
+            this.router.navigate(['/login'], { skipLocationChange: true }).catch(err => console.log(err));
         }
     }
 
-    public refresh() {
-        this.transmissionService.transmission.get().then(value => this.torrents = value);
+    refresh() {
+        this.transmission.get()
+            .then(value => this.torrents = value)
+            .catch(err => {
+                console.log(err);
+                this.router.navigate(['/login'], { skipLocationChange: true }).catch(err => console.log(err));
+            });
     }
 
     addByUrl() {
-        this.transmissionService.transmission.addUrl(this.url).then(value => console.log(value));
+        this.transmission.addUrl(this.url)
+            .then(() => {
+                return this.transmission.get();
+            })
+            .then(value => {
+                this.torrents = value;
+            })
+            .catch(err => {
+                this.snackbar.open(err, undefined, {
+                    duration: 3000
+                });
+            });
     }
 
-    print() {
-        console.log(this.file);
-        let base64 = this.file.content.split(',')[1];
-        this.transmissionService.transmission.addFileBase64(base64).then(value => console.log(value));
+    addFile(file: PickedFile) {
+        if(file.type !== "application/x-bittorrent") {
+            this.snackbar.open("You need to upload a torrent file.", undefined, {
+                duration: 3000
+            });
+            return;
+        }
+        let base64 = file.content.split(',')[1];
+        this.transmission.addFileBase64(base64)
+            .then(() => {
+                return this.transmission.get();
+            })
+            .then(value => {
+                this.torrents = value;
+            })
+            .catch(err => {
+                this.snackbar.open(err, undefined, {
+                    duration: 3000
+                });
+            });
+    }
+
+    removeTorrent(torrent: ITorrent) {
+        this.transmission.remove([torrent.id], true)
+            .then(() => {
+                return this.transmission.get();
+            })
+            .then(value => {
+                this.torrents = value;
+            })
+            .catch(err => {
+                this.snackbar.open(err, undefined, {
+                    duration: 3000
+                });
+            });
     }
 }

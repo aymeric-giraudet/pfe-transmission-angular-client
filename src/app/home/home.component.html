@@ -1,19 +1,30 @@
-<nav class="navbar navbar-light bg-faded">
+<nav class="navbar navbar-expand navbar-light bg-faded justify-content-between">
+    <a class="navbar-brand">Navbar</a>
     <form class="form-inline" novalidate>
         <input class="form-control mr-sm-2" type="text" placeholder="Link" [(ngModel)]="url"
                [ngModelOptions]="{standalone: true}">
-        <button class="btn btn-outline-success my-2 my-sm-0" (click)="addByUrl();">Add</button>
+        <button class="btn btn-outline-primary my-2 my-sm-0" (click)="addByUrl();">Add</button>
     </form>
-    <button type="button" ngFilePicker (filePick)="file = $event; print();">Browse</button>
+    <button class="btn btn-outline-primary my-2 my-sm-0" ngFilePicker (filePick)="addFile($event);">Browse</button>
 </nav>
-<div class="jumbotron">
-    <div *ngFor="let torrent of torrents" class="card">
-        <div class="card-header">
-            {{torrent.name}}
+
+<div class="container main text-center">
+    <div class="jumbotron">
+        <div class="col-md-2 offset-md-5" *ngIf="!torrents">
+            Fetching torrents list...<br/>
+            <mat-spinner></mat-spinner>
         </div>
-        <div class="card-body">
-            <ngb-progressbar showValue="true" type="success"
-                             [value]="(torrent.percentDone*100).toFixed(2)"></ngb-progressbar>
+        <div *ngFor="let torrent of torrents" class="card">
+            <div class="card-header">
+                {{torrent.name}}
+                <button class="btn btn-outline-danger btn-sm float-right" (click)="removeTorrent(torrent)">
+                    <mat-icon color="red">delete</mat-icon>
+                </button>
+            </div>
+            <div class="card-body">
+                <ngb-progressbar showValue="true" type="success"
+                                 [value]="(torrent.percentDone*100).toFixed(2)"></ngb-progressbar>
+            </div>
         </div>
     </div>
 </div>
