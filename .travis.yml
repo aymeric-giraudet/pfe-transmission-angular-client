@@ -13,6 +13,7 @@ before_script:
 
 script:
   - ng test
+  - ng e2e
   - ng build -prod --base-href /pfe-transmission-angular-client/
 
 deploy:
