@@ -24,10 +24,12 @@ export class HomeComponent implements OnInit {
     }
 
     ngOnInit() {
-        if(this.transmission) {
-            setInterval(() => {this.refresh();}, 1000)
+        if (this.transmission) {
+            setInterval(() => {
+                this.refresh();
+            }, 1000)
         } else {
-            this.router.navigate(['/login'], { skipLocationChange: true }).catch(err => console.log(err));
+            this.router.navigate(['/login'], {skipLocationChange: true}).catch(err => console.log(err));
         }
     }
 
@@ -36,7 +38,7 @@ export class HomeComponent implements OnInit {
             .then(value => this.torrents = value)
             .catch(err => {
                 console.log(err);
-                this.router.navigate(['/login'], { skipLocationChange: true }).catch(err => console.log(err));
+                this.router.navigate(['/login'], {skipLocationChange: true}).catch(err => console.log(err));
             });
     }
 
@@ -56,7 +58,7 @@ export class HomeComponent implements OnInit {
     }
 
     addFile(file: PickedFile) {
-        if(file.type !== "application/x-bittorrent") {
+        if (file.type !== "application/x-bittorrent") {
             this.snackbar.open("You need to upload a torrent file.", undefined, {
                 duration: 3000
             });
